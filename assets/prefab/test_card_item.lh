@@ -1,0 +1,84 @@
+{
+  "_$ver": 1,
+  "_$id": "fqu2g0r4",
+  "_$type": "Panel",
+  "name": "Panel",
+  "width": 80,
+  "height": 120,
+  "_mouseState": 2,
+  "_$child": [
+    {
+      "_$id": "19fkzjuk",
+      "_$type": "Image",
+      "name": "bg",
+      "width": 810,
+      "height": 1197.5,
+      "scaleX": 0.1,
+      "scaleY": 0.1,
+      "skin": "res://8a244f3e-7b90-400d-9822-3fa1fee32459",
+      "sizeGrid": "63,66,94,56,0",
+      "color": "#ffffff"
+    },
+    {
+      "_$id": "sn9biss3",
+      "_$type": "Image",
+      "name": "Image",
+      "x": 4,
+      "y": 17,
+      "width": 68,
+      "height": 76,
+      "skin": "res://e25b2de7-4c3f-435f-8268-b0f26fbbff22",
+      "color": "#ffffff"
+    },
+    {
+      "_$id": "ofv689do",
+      "_$type": "Panel",
+      "name": "Panel",
+      "x": -128,
+      "y": 62,
+      "width": 72,
+      "height": 15,
+      "bgColor": "rgba(79, 80, 80, 0.6980392156862745)",
+      "_$child": [
+        {
+          "_$id": "st7ozh3b",
+          "_$type": "Label",
+          "name": "Label",
+          "x": 4.440892098500626e-15,
+          "width": 72,
+          "height": 15,
+          "text": "等级1",
+          "fontSize": 8,
+          "color": "#FFFFFF",
+          "align": "center",
+          "valign": "middle",
+          "padding": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "_$id": "cucixfw5",
+      "_$type": "Image",
+      "name": "Image(1)",
+      "x": -3,
+      "y": -7,
+      "width": 28,
+      "height": 31,
+      "skin": "res://c2847a88-1c8e-484c-ad55-a1d19e63c9ad",
+      "color": "#ffffff"
+    },
+    {
+      "_$id": "hrz9gxgc",
+      "_$type": "ProgressBar",
+      "name": "ProgressBar(1)",
+      "x": 3,
+      "y": 101,
+      "width": 373,
+      "height": 62,
+      "scaleX": 0.2,
+      "scaleY": 0.2,
+      "skin": "res://48f21e38-f961-4676-8acc-48dc9c395478",
+      "value": 1
+    }
+  ]
+}

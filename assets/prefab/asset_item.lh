@@ -1,0 +1,100 @@
+{
+  "_$ver": 1,
+  "_$id": "p1h1i3xy",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_mouseState": 2,
+  "_$comp": [
+    {
+      "_$type": "58bad8a7-69cd-4aab-8a95-8e3ef4950c2c",
+      "scriptPath": "../src/AssetItem.ts",
+      "amount_label": {
+        "_$ref": "z9b0fpbz"
+      },
+      "produce_label": {
+        "_$ref": "nvx7h9oq"
+      },
+      "progress_bar": {
+        "_$ref": "0eoq6n5l"
+      },
+      "buy_btn": {
+        "_$ref": "y3ai3vzu"
+      },
+      "tip_btn": {
+        "_$ref": "2ncr3fqb"
+      }
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "0eoq6n5l",
+      "_$type": "ProgressBar",
+      "name": "ProgressBar",
+      "x": 57,
+      "width": 280,
+      "height": 30,
+      "skin": "res://ae3de75e-ee9f-478d-9f8b-ede75a4fc296",
+      "value": 0
+    },
+    {
+      "_$id": "z9b0fpbz",
+      "_$type": "Label",
+      "name": "amount_label",
+      "x": 3,
+      "y": 4,
+      "width": 63,
+      "height": 28,
+      "text": "Label",
+      "fontSize": 20,
+      "color": "#FFFFFF",
+      "valign": "top",
+      "padding": "0,0,0,0"
+    },
+    {
+      "_$id": "nvx7h9oq",
+      "_$type": "Label",
+      "name": "produce_label",
+      "x": 230,
+      "width": 81,
+      "height": 28,
+      "text": "Label",
+      "fontSize": 20,
+      "color": "#FFFFFF",
+      "align": "center",
+      "valign": "middle",
+      "padding": "0,0,0,0"
+    },
+    {
+      "_$id": "2ncr3fqb",
+      "_$type": "Button",
+      "name": "tip_btn",
+      "x": 295,
+      "y": 34,
+      "width": 36,
+      "height": 40,
+      "_mouseState": 2,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "!",
+      "labelSize": 20,
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    },
+    {
+      "_$id": "y3ai3vzu",
+      "_$type": "Button",
+      "name": "buy_btn",
+      "x": 71,
+      "y": 36,
+      "width": 219,
+      "height": 36,
+      "_mouseState": 2,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "Title",
+      "labelSize": 20,
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    }
+  ]
+}

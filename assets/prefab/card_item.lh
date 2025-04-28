@@ -1,0 +1,136 @@
+{
+  "_$ver": 1,
+  "_$id": "nn03px7z",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 80,
+  "height": 120,
+  "_$comp": [
+    {
+      "_$type": "6582c9b5-0324-48b0-8bf9-f8507739f5af",
+      "scriptPath": "../src/CardItem.ts",
+      "level_progress": {
+        "_$ref": "yl381q0s"
+      },
+      "progress_label": {
+        "_$ref": "6shiux8f"
+      },
+      "level_label": {
+        "_$ref": "0nav98t9"
+      },
+      "card_img": {
+        "_$ref": "c8eqnzgu"
+      },
+      "unlock_cover": {
+        "_$ref": "pq8ju6w3"
+      },
+      "upgrade_sprite": {
+        "_$ref": "xs6znvz7"
+      },
+      "card_panel": {
+        "_$ref": "03jwihno"
+      }
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "2nry8yli",
+      "_$type": "Image",
+      "name": "card_bg",
+      "width": 200,
+      "height": 300,
+      "scaleX": 0.4,
+      "scaleY": 0.4,
+      "skin": "res://e3c5cd8d-a3c3-4c85-89b0-3dbeb4af5b2f",
+      "sizeGrid": "46,30,68,30,0",
+      "color": "#ffffff"
+    },
+    {
+      "_$id": "03jwihno",
+      "_$type": "Panel",
+      "name": "card_panel",
+      "width": 80,
+      "height": 120,
+      "_$child": [
+        {
+          "_$id": "yl381q0s",
+          "_$type": "ProgressBar",
+          "name": "ProgressBar",
+          "x": 4,
+          "y": 2.000000000000014,
+          "width": 71,
+          "height": 15,
+          "skin": "res://ae3de75e-ee9f-478d-9f8b-ede75a4fc296",
+          "value": 0.5,
+          "_$child": [
+            {
+              "_$id": "6shiux8f",
+              "_$type": "Label",
+              "name": "progress_label",
+              "width": 71,
+              "height": 15,
+              "text": "Label",
+              "fontSize": 10,
+              "color": "#FFFFFF",
+              "align": "center",
+              "valign": "middle",
+              "padding": "0,0,0,0"
+            }
+          ]
+        },
+        {
+          "_$id": "c8eqnzgu",
+          "_$type": "Image",
+          "name": "Image",
+          "x": 7,
+          "y": 22,
+          "width": 65,
+          "height": 73,
+          "skin": "res://c13c1b8e-c516-4a0f-98ad-e356f45f0365",
+          "color": "#ffffff"
+        },
+        {
+          "_$id": "0nav98t9",
+          "_$type": "Label",
+          "name": "level_label",
+          "x": -18,
+          "y": -3.9999999999999716,
+          "width": 48,
+          "height": 22,
+          "text": "Label",
+          "fontSize": 12,
+          "color": "#FFFFFF",
+          "align": "center",
+          "valign": "middle",
+          "bgColor": "rgba(54, 52, 52, 0.5333333333333333)",
+          "padding": "0,0,0,0"
+        },
+        {
+          "_$id": "xs6znvz7",
+          "_$type": "Label",
+          "name": "upgrade_sprite",
+          "y": 41,
+          "width": 81,
+          "height": 22,
+          "visible": false,
+          "text": "升级",
+          "fontSize": 20,
+          "color": "#FFFFFF",
+          "align": "center",
+          "valign": "middle",
+          "padding": "0,0,0,0"
+        }
+      ]
+    },
+    {
+      "_$id": "pq8ju6w3",
+      "_$type": "Panel",
+      "name": "unlock_cover",
+      "width": 80,
+      "height": 120,
+      "visible": false,
+      "_mouseState": 1,
+      "bgColor": "rgba(81, 79, 79, 0.7843137254901961)"
+    }
+  ]
+}

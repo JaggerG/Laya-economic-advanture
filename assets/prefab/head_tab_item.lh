@@ -1,0 +1,15 @@
+{
+  "_$ver": 1,
+  "_$id": "l899ecc4",
+  "_$type": "Button",
+  "name": "Button",
+  "y": 2,
+  "width": 160,
+  "height": 61,
+  "_mouseState": 2,
+  "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+  "label": "0",
+  "labelSize": 20,
+  "labelAlign": "center",
+  "labelVAlign": "middle"
+}

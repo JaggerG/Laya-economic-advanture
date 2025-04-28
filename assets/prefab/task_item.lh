@@ -1,0 +1,75 @@
+{
+  "_$ver": 1,
+  "_$id": "do8rxl0q",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 100,
+  "height": 60,
+  "bgColor": "rgba(230, 154, 26, 1)",
+  "_$comp": [
+    {
+      "_$type": "5e8834de-2cb9-4dd8-8fb6-785080505b81",
+      "scriptPath": "../src/TaskItem.ts",
+      "desc_label": {
+        "_$ref": "qudhbwd1"
+      },
+      "task_image": {
+        "_$ref": "afja1nd1"
+      },
+      "task_progress": {
+        "_$ref": "1v3hey72"
+      },
+      "finish_img": {
+        "_$ref": "0o9dlpu0"
+      }
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "qudhbwd1",
+      "_$type": "Label",
+      "name": "desc_label",
+      "x": 41,
+      "y": 16,
+      "width": 53,
+      "height": 16,
+      "text": "Label",
+      "fontSize": 12,
+      "color": "#FFFFFF",
+      "valign": "middle",
+      "padding": "0,0,0,0"
+    },
+    {
+      "_$id": "afja1nd1",
+      "_$type": "Image",
+      "name": "task_img",
+      "x": 8.999999999999996,
+      "y": 8.999999999999996,
+      "width": 30,
+      "height": 30,
+      "skin": "res://c13c1b8e-c516-4a0f-98ad-e356f45f0365",
+      "color": "#ffffff"
+    },
+    {
+      "_$id": "1v3hey72",
+      "_$type": "ProgressBar",
+      "name": "task_progress",
+      "x": 6,
+      "y": 46,
+      "width": 90,
+      "height": 10,
+      "skin": "res://ae3de75e-ee9f-478d-9f8b-ede75a4fc296",
+      "value": 0.5
+    },
+    {
+      "_$id": "0o9dlpu0",
+      "_$type": "Image",
+      "name": "finish_img",
+      "width": 100,
+      "height": 60,
+      "visible": false,
+      "skin": "res://c13c1b8e-c516-4a0f-98ad-e356f45f0365",
+      "color": "#ffffff"
+    }
+  ]
+}

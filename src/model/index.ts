@@ -1,14 +1,14 @@
 let Assets = [
   {
     name: "Potato",
-    amount: 0,
+    amount: "0",
     img_url: "",
     child: [
       {
         name: "Farmer",
-        amount: 250,
+        amount: "250",
         level: 1,
-        outcome: 10,
+        outcome: "10000000000000",
         produce: "Parent",
         bro: "",
         time: 4,
@@ -16,46 +16,46 @@ let Assets = [
         cost: [
           {
             name: "Parent",
-            quantity: 2,
+            quantity: "2",
           },
           {
             name: "Employee",
-            quantity: 1,
+            quantity: "1",
           },
         ],
         bonus: {
           Power: {
             name: "POWER",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Discount: {
             name: "DISCOUNT",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Speed: {
             name: "SPEED",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Chance: {
             name: "CHANCE",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Bonus: {
             name: "BONUS",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
         },
       },
       {
         name: "Commune",
-        amount: 1,
+        amount: "1",
         level: 1,
-        outcome: 8,
+        outcome: "8",
         produce: "Farmer",
         bro: "",
         time: 8,
@@ -63,37 +63,37 @@ let Assets = [
         cost: [
           {
             name: "Farmer",
-            quantity: 2,
+            quantity: "2",
           },
           {
             name: "Employee",
-            quantity: 1,
+            quantity: "1",
           },
         ],
         bonus: {
           Power: {
             name: "POWER",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Discount: {
             name: "DISCOUNT",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Speed: {
             name: "SPEED",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Chance: {
             name: "CHANCE",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Bonus: {
             name: "BONUS",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
         },
@@ -102,14 +102,14 @@ let Assets = [
   },
   {
     name: "Orange",
-    amount: 10,
+    amount: "10",
     img_url: "",
     child: [
       {
         name: "Farmer",
-        amount: 10,
+        amount: "10",
         level: 1,
-        outcome: 4,
+        outcome: "4",
         produce: "Parent",
         bro: "",
         time: 8,
@@ -117,46 +117,46 @@ let Assets = [
         cost: [
           {
             name: "Parent",
-            quantity: 2,
+            quantity: "2",
           },
           {
             name: "Employee",
-            quantity: 1,
+            quantity: "1",
           },
         ],
         bonus: {
           Power: {
             name: "POWER",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Discount: {
             name: "DISCOUNT",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Speed: {
             name: "SPEED",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Chance: {
             name: "CHANCE",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Bonus: {
             name: "BONUS",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
         },
       },
       {
         name: "Commune",
-        amount: 1,
+        amount: "1",
         level: 1,
-        outcome: 8,
+        outcome: "8",
         produce: "Farmer",
         bro: "",
         time: 8,
@@ -164,37 +164,37 @@ let Assets = [
         cost: [
           {
             name: "Farmer",
-            quantity: 2,
+            quantity: "2",
           },
           {
             name: "Employee",
-            quantity: 1,
+            quantity: "1",
           },
         ],
         bonus: {
           Power: {
             name: "POWER",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Discount: {
             name: "DISCOUNT",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Speed: {
             name: "SPEED",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Chance: {
             name: "CHANCE",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Bonus: {
             name: "BONUS",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
         },
@@ -203,14 +203,14 @@ let Assets = [
   },
   {
     name: "Tomato",
-    amount: 100,
+    amount: "100",
     img_url: "",
     child: [
       {
         name: "Farmer",
-        amount: 15,
+        amount: "15",
         level: 1,
-        outcome: 4,
+        outcome: "4",
         produce: "Parent",
         bro: "",
         time: 16,
@@ -218,46 +218,46 @@ let Assets = [
         cost: [
           {
             name: "Parent",
-            quantity: 2,
+            quantity: "2",
           },
           {
             name: "Employee",
-            quantity: 1,
+            quantity: "1",
           },
         ],
         bonus: {
           Power: {
             name: "POWER",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Discount: {
             name: "DISCOUNT",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Speed: {
             name: "SPEED",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Chance: {
             name: "CHANCE",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Bonus: {
             name: "BONUS",
-            quantity: 1,
+            quantity: "2",
             url_img: "",
           },
         },
       },
       {
         name: "Commune",
-        amount: 1,
+        amount: "1",
         level: 1,
-        outcome: 8,
+        outcome: "8",
         produce: "Farmer",
         bro: "",
         time: 8,
@@ -265,37 +265,37 @@ let Assets = [
         cost: [
           {
             name: "Farmer",
-            quantity: 2,
+            quantity: "2",
           },
           {
             name: "Employee",
-            quantity: 1,
+            quantity: "1",
           },
         ],
         bonus: {
           Power: {
             name: "POWER",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Discount: {
             name: "DISCOUNT",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Speed: {
             name: "SPEED",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Chance: {
             name: "CHANCE",
-            quantity: 1,
+            quantity: "1",
             url_img: "",
           },
           Bonus: {
             name: "BONUS",
-            quantity: 2,
+            quantity: "1",
             url_img: "",
           },
         },
@@ -305,8 +305,8 @@ let Assets = [
 ];
 let Employee = {
   time: 4,
-  amount: 10,
-  produce_per_sec: 5,
+  amount: "10",
+  produce_per_sec: "5",
 };
 let Cards = [
   {
@@ -459,35 +459,35 @@ let Tasks = [
         desc: "拥有农民",
         type: "OWN",
         target_asset: "Farmer",
-        target: 250,
+        target: "250",
         reward: { c_min: 10, c_max: 20, atLeast: 2, s_min: 100, s_max: 150 },
       },
       {
         desc: "花费点数",
         type: "SPEND",
         target_asset: "Science",
-        target: 25,
+        target: "25",
         reward: { c_min: 10, c_max: 20, atLeast: 2, s_min: 100, s_max: 150 },
       },
       {
         desc: "收集土豆",
         type: "COLLECT",
         target_asset: "Potato",
-        target: 250,
+        target: "250",
         reward: { c_min: 10, c_max: 20, atLeast: 2, s_min: 100, s_max: 150 },
       },
       {
         desc: "收集卡片",
         type: "COLLECT",
         target_asset: "Card",
-        target: 100,
+        target: "100",
         reward: { c_min: 10, c_max: 20, atLeast: 2, s_min: 100, s_max: 150 },
       },
       {
         desc: "拥有农民1",
         type: "OWN",
         target_asset: "Farmer",
-        target: 2500,
+        target: "2500",
         reward: { c_min: 10, c_max: 20, atLeast: 2, s_min: 100, s_max: 150 },
       },
 

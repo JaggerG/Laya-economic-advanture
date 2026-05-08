@@ -1,39 +1,20 @@
 import Data from "../model/index";
-import Decimal from "decimal.js";
+import * as BN from "./BigNumber";
 
-/**
- * 每秒生产数量
- * @param {*} parent_idx
- * @param {*} child_idx
- * @returns
- */
 const produce_sec_sum = (parent_idx: number, child_idx: number) => {
   const config = Data.Assets[parent_idx].child[child_idx];
-  // const time = config.outcome * config.bonus.Power.quantity;
-  const outcome = new Decimal(config.outcome).mul(
-    new Decimal(config.bonus.Power.quantity)
-  );
-  const time = config.time / config.bonus.Speed.quantity;
-  // const sum = (config.amount * outcome) / time;
-  const sum = new Decimal(config.amount)
-    .mul(new Decimal(outcome))
-    .div(new Decimal(time))
-    .toString();
-  return convertToUnits(sum);
+  const outcome = BN.mul(config.outcome, config.bonus.Power.quantity);
+  const time = BN.div(config.time, config.bonus.Speed.quantity);
+  const sum = BN.div(BN.mul(config.amount, outcome), time);
+  return BN.formatNumber(sum);
 };
 
-/**
- * 获取可购买数量
- * @param {*} parent_idx
- * @param {*} child_idx
- * @returns
- */
 const can_buy_sum = (parent_idx: number, child_idx: number) => {
   const config = Data.Assets[parent_idx].child[child_idx];
   const parent = Data.Assets[parent_idx];
-  let cost_num: any[] = [];
+  let cost_num: string[] = [];
   config.cost.forEach((item: any) => {
-    let quantity, target_amount;
+    let target_amount: string;
     if (item.name === "Parent") {
       target_amount = parent.amount;
     } else if (item.name === "Employee") {
@@ -41,75 +22,47 @@ const can_buy_sum = (parent_idx: number, child_idx: number) => {
     } else {
       target_amount = parent.child[child_idx - 1].amount;
     }
-    // quantity = Math.floor(target_amount / item.quantity);
-    // target_amount = Math.floor(target_amount / config.bonus['Discount'].quantity);
-    target_amount = new Decimal(target_amount).div(new Decimal(config.bonus['Discount'].quantity));
-    quantity = new Decimal(target_amount).div(new Decimal(item.quantity)).toDP(0);
+    target_amount = BN.div(target_amount, config.bonus['Discount'].quantity);
+    const quantity = BN.floorDiv(target_amount, item.quantity);
     cost_num.push(quantity);
   });
-  const min_can_buy_amount = get_min(cost_num);
-  return min_can_buy_amount;
+  return BN.min(cost_num);
 };
 
-const get_min = (data: any) => {
-  let min = data[0];
-  for (let i = 1; i < data.length; i++) {
-    // min > data[i]
-    if (new Decimal(min).gt(new Decimal(data[i]))) {
-      min = data[i];
+const calculateNextLevelCost = (parent_idx: number, child_idx: number): string => {
+  const config = Data.Assets[parent_idx].child[child_idx];
+  const currentAmount = parseInt(config.amount);
+  const currentLevel = config.level || 1;
+
+  const levelThresholds = [10, 25, 50, 100, 200, 500, 1000, 2000, 5000, 10000];
+
+  let nextLevelTarget = -1;
+  for (const threshold of levelThresholds) {
+    if (currentAmount < threshold) {
+      nextLevelTarget = threshold;
+      break;
     }
   }
-  return min;
-};
-const convertToUnits = (number: string): string => {
-  Decimal.set({ precision: 100 });
-  const units = ["", "K", "M", "B", "T", "Q"];
-  const extraUnits = [
-    "AA",
-    "BB",
-    "CC",
-    "DD",
-    "EE",
-    "FF",
-    "GG",
-    "HH",
-    "II",
-    "JJ",
-    "KK",
-    "LL",
-    "MM",
-    "NN",
-    "OO",
-    "PP",
-    "QQ",
-    "RR",
-    "SS",
-    "TT",
-    "UU",
-    "VV",
-    "WW",
-    "XX",
-    "YY",
-    "ZZ",
-  ];
-  let unitIndex = 0;
-  let num = new Decimal(number);
 
-  while (num.gte(1000) && unitIndex < units.length + extraUnits.length - 1) {
-    num = num.dividedBy(1000);
-    unitIndex++;
+  if (nextLevelTarget === -1) {
+    return can_buy_sum(parent_idx, child_idx);
   }
-  
-  if (unitIndex == 0) {
-    return `${num.toFixed(0)}`
-  } else if (unitIndex < units.length) {
-    return `${num.toFixed(2)}${units[unitIndex]}`;
-  }else {
-    return `${num.toFixed(2)}${extraUnits[unitIndex - units.length]}`;
+
+  const needToBuy = nextLevelTarget - currentAmount;
+  const maxCanBuy = can_buy_sum(parent_idx, child_idx);
+
+  if (BN.gt(needToBuy.toString(), maxCanBuy)) {
+    return maxCanBuy;
   }
+
+  return needToBuy.toString();
 };
+
+const convertToUnits = BN.formatNumber;
+
 export default {
   produce_sec_sum,
   can_buy_sum,
+  calculateNextLevelCost,
   convertToUnits,
 };

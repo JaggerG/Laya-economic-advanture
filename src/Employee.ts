@@ -1,9 +1,12 @@
 const { regClass, property } = Laya;
 import Data from "./model/index";
 import EventManager from "./utils/EventManager";
+import Assets from "./utils/Assets";
+import * as BN from "./utils/BigNumber";
+import { GameTimerManager, IProgressUpdater } from "./utils/GameTimerManager";
 
 @regClass()
-export class Employee extends Laya.Script {
+export class Employee extends Laya.Script implements IProgressUpdater {
   @property({ type: Laya.ProgressBar })
   public employee_progress: Laya.ProgressBar;
   @property({ type: Laya.Label })
@@ -11,19 +14,26 @@ export class Employee extends Laya.Script {
 
   private step: number = 0;
 
+  update(): void {
+    this.changeProgress();
+  }
+
   onStart(): void {
-    this.employee_amount_label.text = Data.Employee.amount.toString();
+    this.employee_amount_label.text = Assets.convertToUnits(Data.Employee.amount);
     this.step = 1 / 10;
-    Laya.timer.loop(100, this, this.changeProgress);
+    GameTimerManager.getInstance().registerProgressUpdater(this);
     EventManager.getInstance().Add("updateEmployeeLabel", this, () => {
-      this.employee_amount_label.text = Data.Employee.amount.toString();
+      this.employee_amount_label.text = Assets.convertToUnits(Data.Employee.amount);
     });
   }
+
+  onDestroy(): void {
+    GameTimerManager.getInstance().unregisterProgressUpdater(this);
+  }
   changeProgress(): void {
-    // const progressPercent = this.cur_time / this.config.time
     if (this.employee_progress.value >= 1) {
-      Data.Employee.amount += Data.Employee.produce_per_sec;
-      this.employee_amount_label.text = Data.Employee.amount.toString();
+      Data.Employee.amount = BN.add(Data.Employee.amount, Data.Employee.produce_per_sec);
+      this.employee_amount_label.text = Assets.convertToUnits(Data.Employee.amount);
       this.employee_progress.value = 0;
     }
     this.employee_progress.value += this.step;

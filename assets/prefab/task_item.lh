@@ -8,7 +8,7 @@
   "bgColor": "rgba(230, 154, 26, 1)",
   "_$comp": [
     {
-      "_$type": "5e8834de-2cb9-4dd8-8fb6-785080505b81",
+      "_$type": "3c53ffda-f466-4a38-a692-83e3561ad7f6",
       "scriptPath": "../src/TaskItem.ts",
       "desc_label": {
         "_$ref": "qudhbwd1"

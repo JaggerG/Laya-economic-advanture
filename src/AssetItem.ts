@@ -2,10 +2,11 @@ const { regClass, property } = Laya;
 import Data from "./model/index";
 import EventManager from "./utils/EventManager";
 import Assets from "./utils/Assets";
-import Decimal from "decimal.js";
+import * as BN from "./utils/BigNumber";
+import { GameTimerManager, IProgressUpdater } from "./utils/GameTimerManager";
 
 @regClass()
-export class AssetItem extends Laya.Script {
+export class AssetItem extends Laya.Script implements IProgressUpdater {
   @property({ type: Laya.Label })
   public amount_label: Laya.Label;
   @property({ type: Laya.Label })
@@ -23,7 +24,7 @@ export class AssetItem extends Laya.Script {
   private asset_idx: number;
   private progress_step: number;
   private purchase_type: string = "x1";
-  private can_buy_sum: any = 0;
+  private can_buy_sum: string = "0";
 
   changeProgress() {
     if (this.progress_step < 0.1) {
@@ -36,56 +37,58 @@ export class AssetItem extends Laya.Script {
       this.produce_goods();
     }
     this.can_buy_sum = Assets.can_buy_sum(this.panel_idx, this.asset_idx);
-    if (this.can_buy_sum > 0) {
+    if (BN.gt(this.can_buy_sum, "0")) {
       if (this.purchase_type === "x1") {
         this.can_buy_sum = "1";
       } else if (this.purchase_type === "10%") {
         this.can_buy_sum =
-          // Math.floor(this.can_buy_sum * 0.1) === 0
-          new Decimal(this.can_buy_sum).mul(0.1).toString() === "0"
+          BN.mul(this.can_buy_sum, "0.1") === "0"
             ? "1"
-            : new Decimal(this.can_buy_sum).mul(0.1).toDP(0).toFixed(0);
+            : BN.floorDiv(this.can_buy_sum, "10");
       } else if (this.purchase_type === "50%") {
         this.can_buy_sum =
-          // Math.floor(this.can_buy_sum * 0.5) === 0
-          new Decimal(this.can_buy_sum).mul(0.5).toString() === "0"
+          BN.mul(this.can_buy_sum, "0.5") === "0"
             ? "1"
-            : new Decimal(this.can_buy_sum).mul(0.5).toDP(0).toFixed(0);
+            : BN.floorDiv(this.can_buy_sum, "2");
+      } else if (this.purchase_type === "下一级") {
+        this.can_buy_sum = Assets.calculateNextLevelCost(this.panel_idx, this.asset_idx);
       }
       this.buy_btn.label = "购买 x" + Assets.convertToUnits(this.can_buy_sum);
+      this.buy_btn.gray = false;
+      this.buy_btn.mouseEnabled = true;
     } else {
-      // TODO: 不能购买UI更新
+      this.buy_btn.label = "资源不足";
+      this.buy_btn.gray = true;
+      this.buy_btn.mouseEnabled = false;
     }
   }
   // 产出物品
   produce_goods() {
-    let produce_num;
+    let produce_num: string;
     if (this.progress_step < 0.1) {
-      produce_num = this.config.amount * this.config.outcome;
+      produce_num = BN.mul(this.config.amount, this.config.outcome);
     } else {
       const time = this.config.time * 10;
-      produce_num = this.config.amount * this.config.outcome / time * this.config.bonus['Speed'].quantity;
+      produce_num = BN.div(BN.mul(BN.mul(this.config.amount, this.config.outcome), this.config.bonus['Speed'].quantity), time);
     }
     // 卡牌加成计算
-    produce_num *= this.config.bonus['Power'].quantity
-    const probability = this.config.bonus['Chance'].quantity
+    produce_num = BN.mul(produce_num, this.config.bonus['Power'].quantity);
+    const probability = parseFloat(this.config.bonus['Chance'].quantity);
     const randomSeed = Math.random() * 100;
     if (randomSeed <= probability) {
-      // TODO: 逻辑待优化
-      // TODO: 动画展示
-      produce_num *= this.config.bonus['Bonus'].quantity
+      produce_num = BN.mul(produce_num, this.config.bonus['Bonus'].quantity);
       console.log('critical-----------------------')
     }
     EventManager.getInstance().Emit(this.config.name + '_COLLECT_update',[produce_num])
     // 更新数据和视图
     if (this.config.produce === "Parent") {
       const parent = Data.Assets[this.panel_idx];
-      parent.amount += produce_num;
+      parent.amount = BN.add(parent.amount, produce_num);
       EventManager.getInstance().Emit("updateParentLabel", [this.panel_idx]);
       EventManager.getInstance().Emit(parent.name + '_COLLECT_update', [produce_num]);
     } else {
       const broConfig = Data.Assets[this.panel_idx].child[this.asset_idx - 1];
-      broConfig.amount += produce_num;
+      broConfig.amount = BN.add(broConfig.amount, produce_num);
       this.data.bro.updateChildLabel();
     }
   }
@@ -97,22 +100,22 @@ export class AssetItem extends Laya.Script {
     // 减去消耗品
     for (let i = 0; i < this.config.cost.length; i++) {
       if (this.config.cost[i].name === "Parent") {
-        Data.Assets[this.panel_idx].amount -= parseInt(this.can_buy_sum);
+        Data.Assets[this.panel_idx].amount = BN.sub(Data.Assets[this.panel_idx].amount, this.can_buy_sum);
         EventManager.getInstance().Emit("updateParentLabel", [this.panel_idx]);
       } else if (this.config.cost[i].name === "Employee") {
-        Data.Employee.amount -= parseInt(this.can_buy_sum);
+        Data.Employee.amount = BN.sub(Data.Employee.amount, this.can_buy_sum);
         EventManager.getInstance().Emit("updateEmployeeLabel", []);
       } else {
         let bro = Data.Assets[this.panel_idx].child[this.asset_idx - 1];
-        bro.amount -= parseInt(this.can_buy_sum);
+        bro.amount = BN.sub(bro.amount, this.can_buy_sum);
         EventManager.getInstance().Emit("updateChildLabel" + bro.name, []);
       }
     }
 
     // 增加总数
-    this.config.amount += parseInt(this.can_buy_sum);
+    this.config.amount = BN.add(this.config.amount, this.can_buy_sum);
     // 更新UI
-    this.amount_label.text = this.config.amount.toString();
+    this.amount_label.text = Assets.convertToUnits(this.config.amount);
     this.initData();
   }
   handleTipBtn() {}
@@ -133,15 +136,17 @@ export class AssetItem extends Laya.Script {
       this.updateChildLabel
     );
   }
+  update(): void {
+    this.changeProgress();
+  }
+
   initData() {
-    this.amount_label.text = this.config.amount.toString();
-    this.produce_label.text = (
-      this.config.outcome * this.config.amount * this.config.bonus['Power'].quantity
-    ).toString();
+    this.amount_label.text = Assets.convertToUnits(this.config.amount);
+    this.produce_label.text = Assets.convertToUnits(
+      BN.mul(BN.mul(this.config.outcome, this.config.amount), this.config.bonus['Power'].quantity)
+    );
     this.progress_step = 1 / this.config.time / 10 * this.config.bonus['Speed'].quantity;
     console.log(this.config.name, this.progress_step);
-    // 启动进度条
-    Laya.timer.loop(100, this, this.changeProgress);
     EventManager.getInstance().Emit(this.data.config.name + '_update', [])
   }
   onStart() {
@@ -151,6 +156,10 @@ export class AssetItem extends Laya.Script {
     this.asset_idx = this.data.asset_idx;
     this.initData();
     this.initEvent();
+    GameTimerManager.getInstance().registerProgressUpdater(this);
+  }
 
+  onDestroy(): void {
+    GameTimerManager.getInstance().unregisterProgressUpdater(this);
   }
 }

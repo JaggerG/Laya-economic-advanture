@@ -50,7 +50,10 @@
                   "task_list_box": {
                     "_$ref": "j3r18h0f"
                   },
-                  "task_item_prefab": null,
+                  "task_item_prefab": {
+                    "_$uuid": "553d0989-80af-45c2-a49f-964bee3b1a3a",
+                    "_$type": "Prefab"
+                  },
                   "s_point_label": {
                     "_$ref": "gul7olyi"
                   },
@@ -183,7 +186,10 @@
                       "times_btn": {
                         "_$ref": "r7rjg8il"
                       },
-                      "tab_item_prefab": null
+                      "tab_item_prefab": {
+                        "_$uuid": "69720ba3-7cb1-4566-888c-7f5e59cd386a",
+                        "_$type": "Prefab"
+                      }
                     }
                   ],
                   "_$child": [
@@ -198,6 +204,7 @@
                       "_mouseState": 2,
                       "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
                       "label": "Title",
+                      "labelFont": "Arial-Black",
                       "labelSize": 20,
                       "labelAlign": "center",
                       "labelVAlign": "middle"

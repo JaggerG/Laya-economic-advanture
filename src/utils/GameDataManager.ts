@@ -87,6 +87,7 @@ export interface IGameSaveData {
   version: number;
   timestamp: number;
   level: number;
+  exp: number;
   science_point: number;
   assets: IAssetSave[];
   employee: IEmployeeSave;
@@ -132,6 +133,7 @@ export class GameDataManager {
       version: 1,
       timestamp: Date.now(),
       level: userInfo.level,
+      exp: userInfo.exp,
       science_point: userInfo.science_point,
       assets: Data.Assets.map((asset: any) => ({
         name: asset.name,
@@ -187,6 +189,7 @@ export class GameDataManager {
    */
   restore(saveData: IGameSaveData): void {
     userInfo.level = saveData.level;
+    userInfo.exp = saveData.exp || 0;
     userInfo.science_point = saveData.science_point;
 
     for (let i = 0; i < Data.Assets.length && i < saveData.assets.length; i++) {

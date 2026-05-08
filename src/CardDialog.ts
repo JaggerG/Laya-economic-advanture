@@ -58,7 +58,7 @@ export class CardDialog extends Laya.Script {
     console.log(this.user_info);
     console.log(this.card_info);
     this.card_name_label.text = this.card_info.name;
-    this.card_des_label.text = "card description";
+    this.card_des_label.text = this.card_info.description || "card description";
 
     const cur_card = this.user_info;
     const cur_card_amount = cur_card.has_amount;
@@ -121,8 +121,7 @@ export class CardDialog extends Laya.Script {
       EventManager.getInstance().Emit("close_card_dialog", []);
       EventManager.getInstance().Emit("CardList_update", []);
     } else {
-      // TODO：提示或者弹窗
-      console.log("科学点不足");
+      EventManager.getInstance().Emit("showToast", ["科学点不足"]);
     }
   }
 }

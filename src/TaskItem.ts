@@ -15,6 +15,7 @@ import userInfo from "./model/userInfo";
 import Data from "./model/index";
 import EventManager from "./utils/EventManager";
 import lottery from "./utils/lottery";
+import { LevelManager } from "./utils/LevelManager";
 import * as BN from "./utils/BigNumber";
 
 @regClass()
@@ -160,6 +161,8 @@ export class TaskItem extends Laya.Script {
     const s_min = this.config.reward.s_min;
     const s_max = this.config.reward.s_max;
     const scienceInfo = lottery.drawSciencePoint(s_min, s_max);
+    const expReward = this.config.reward.exp || 0;
+    LevelManager.getInstance().addExp(expReward);
 
     this.initNextTask();
     console.log("动画数据");

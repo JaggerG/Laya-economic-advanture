@@ -19,6 +19,7 @@ import EventManager from "./utils/EventManager";
 import Assets from "./utils/Assets";
 import { GameTimerManager } from "./utils/GameTimerManager";
 import { GameDataManager } from "./utils/GameDataManager";
+import { LevelManager } from "./utils/LevelManager";
 
 @regClass()
 export class Main extends Laya.Script {
@@ -40,6 +41,15 @@ export class Main extends Laya.Script {
   /** 任务总进度条 */
   @property({ type: Laya.ProgressBar })
   public task_progress:Laya.ProgressBar;
+  /** 等级标签 */
+  @property({ type: Laya.Label })
+  public level_label: Laya.Label;
+  /** 经验值进度条 */
+  @property({ type: Laya.ProgressBar })
+  public exp_progress: Laya.ProgressBar;
+  /** 经验值标签 */
+  @property({ type: Laya.Label })
+  public exp_label: Laya.Label;
 
   /**
    * 组件启动时调用
@@ -218,7 +228,73 @@ export class Main extends Laya.Script {
   initEvent() {
     EventManager.getInstance().Add('Science_update', this, () => {
       this.s_point_label.text = userInfo.science_point.toString();
-    })
+    });
+    EventManager.getInstance().Add('Exp_update', this, this.updateLevelUI);
+    EventManager.getInstance().Add('LevelUp', this, this.onLevelUp);
+  }
+
+  /**
+   * 更新等级和 EXP UI 显示
+   */
+  updateLevelUI() {
+    const levelMgr = LevelManager.getInstance();
+    const progress = levelMgr.getExpProgress();
+    this.level_label.text = "Lv." + userInfo.level;
+    this.exp_progress.value = progress.required > 0 ? progress.current / progress.required : 0;
+    this.exp_label.text = progress.current + "/" + progress.required;
+  }
+
+  /**
+   * 等级提升处理
+   * @param newLevel - 新等级
+   */
+  onLevelUp(newLevel: number) {
+    this.updateLevelUI();
+    const levelMgr = LevelManager.getInstance();
+    const title = levelMgr.getLevelTitle(newLevel);
+
+    const dialog = new Laya.Dialog();
+    dialog.width = 300;
+    dialog.height = 200;
+    dialog.isPopupCenter = true;
+
+    const bg = new Laya.Image();
+    bg.skin = "comp/img_bg.png";
+    bg.sizeGrid = "10,10,10,10";
+    bg.width = 300;
+    bg.height = 200;
+    dialog.addChild(bg);
+
+    const titleLabel = new Laya.Label();
+    titleLabel.text = "升级啦！";
+    titleLabel.fontSize = 28;
+    titleLabel.color = "#FFD700";
+    titleLabel.bold = true;
+    titleLabel.centerX = 0;
+    titleLabel.y = 30;
+    dialog.addChild(titleLabel);
+
+    const contentLabel = new Laya.Label();
+    contentLabel.text = "恭喜达到 Lv." + newLevel + "\n" + title;
+    contentLabel.fontSize = 20;
+    contentLabel.color = "#FFFFFF";
+    contentLabel.centerX = 0;
+    contentLabel.y = 80;
+    contentLabel.align = "center";
+    dialog.addChild(contentLabel);
+
+    const confirmBtn = new Laya.Button();
+    confirmBtn.label = "确定";
+    confirmBtn.width = 100;
+    confirmBtn.height = 40;
+    confirmBtn.centerX = 0;
+    confirmBtn.y = 140;
+    confirmBtn.on(Laya.Event.CLICK, this, () => {
+      dialog.close();
+    });
+    dialog.addChild(confirmBtn);
+
+    dialog.popup();
   }
 
   /**
@@ -227,6 +303,7 @@ export class Main extends Laya.Script {
    */
   initUI() {
     this.s_point_label.text = userInfo.science_point.toString();
+    this.updateLevelUI();
   }
 
   /**

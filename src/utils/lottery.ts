@@ -55,13 +55,17 @@ function pureRandomDraw(cards: any) {
  * 确保玩家至少获得 atLeast 张卡牌
  */
 const drawCard = (total: number, atLeast: number) => {
+  // 根据玩家等级过滤卡牌池
+  const filteredPool = cardPool.filter(
+    (card: any) => card.level_require <= userInfo.level
+  );
   // 卡片信息
   let cardInfo = [];
   for (let i = 0; i < total; i++) {
-    cardInfo.push(pureRandomDraw(cardPool));
+    cardInfo.push(pureRandomDraw(filteredPool));
   }
   for (let i = 0; i < atLeast; i++) {
-    cardInfo.push(pureRandomDraw(cardPool));
+    cardInfo.push(pureRandomDraw(filteredPool));
   }
   return cardInfo;
 };

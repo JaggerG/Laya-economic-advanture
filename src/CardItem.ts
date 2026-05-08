@@ -61,6 +61,18 @@ export class CardItem extends Laya.Script {
     this.card_idx = userInfo.Card.findIndex(
       (cardInfo) => cardInfo.name === data.name
     );
+
+    // 检查是否被等级锁定
+    if (userInfo.level < data.level_require) {
+      this.unlock_cover.visible = true;
+      this.level_label.text = "Lv." + data.level_require + "解锁";
+      this.level_progress.value = 0;
+      this.progress_label.text = "0/0";
+      this.upgrade_sprite.visible = false;
+      this.isShowDialog = false;
+      return;
+    }
+
     if (this.card_idx != -1) {
       if (userInfo.Card[this.card_idx].level > 0) {
         this.unlock_cover.visible = false;
@@ -73,10 +85,12 @@ export class CardItem extends Laya.Script {
       this.level_label.text = "等级" + userInfo.Card[this.card_idx].level;
       this.checkCardInfo();
     } else {
-      this.level_label.text = "locked";
+      this.unlock_cover.visible = false;
+      this.level_label.text = "未获得";
       this.level_progress.value = 0;
-      this.unlock_cover.visible = true;
-      this.isShowDialog = false;
+      this.progress_label.text = "0/0";
+      this.upgrade_sprite.visible = false;
+      this.isShowDialog = true;
     }
   }
 
@@ -172,6 +186,11 @@ export class CardItem extends Laya.Script {
   onStart() {
     this.card_panel.on(Laya.Event.CLICK, this, () => {
       console.log("showCardDialog");
+      // 等级锁定的卡牌点击提示
+      if (userInfo.level < this.card_data.level_require) {
+        console.log("等级不足，需要达到 Lv." + this.card_data.level_require + " 解锁");
+        return;
+      }
       const data = {
         card_info: this.card_data,
         user_info: this.user_card_info,

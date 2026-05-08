@@ -71,6 +71,11 @@ export class card_scene extends Laya.Script {
       this,
       this.updateCardList
     );
+    EventManager.getInstance().Add(
+      "UnlockCard",
+      this,
+      this.updateCardList
+    );
   }
 
   /**

@@ -50,10 +50,7 @@
                   "task_list_box": {
                     "_$ref": "j3r18h0f"
                   },
-                  "task_item_prefab": {
-                    "_$uuid": "202d4ee8-4e6f-4ad1-a507-2fc463516dab",
-                    "_$type": "Prefab"
-                  },
+                  "task_item_prefab": null,
                   "s_point_label": {
                     "_$ref": "gul7olyi"
                   },
@@ -186,10 +183,7 @@
                       "times_btn": {
                         "_$ref": "r7rjg8il"
                       },
-                      "tab_item_prefab": {
-                        "_$uuid": "1153e345-fb53-408b-8146-79f8e5651c83",
-                        "_$type": "Prefab"
-                      }
+                      "tab_item_prefab": null
                     }
                   ],
                   "_$child": [
@@ -663,19 +657,6 @@
           ]
         }
       ]
-    },
-    {
-      "_$id": "8drsytqu",
-      "_$prefab": "8244a8a9-46a3-4923-b8a3-7934bbd36202",
-      "name": "test_card_item",
-      "active": true,
-      "x": 121,
-      "y": 358,
-      "visible": true,
-      "width": 84,
-      "height": 122,
-      "scaleX": 2.5,
-      "scaleY": 2.5
     }
   ]
 }

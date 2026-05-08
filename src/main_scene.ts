@@ -1,3 +1,15 @@
+/**
+ * 主场景组件
+ * 游戏的核心入口场景，负责初始化所有游戏系统和 UI 组件
+ * 
+ * 核心功能：
+ * - 游戏存档的加载和离线收益处理
+ * - 资产面板、任务面板、头部面板的初始化
+ * - 自动存档定时器
+ * - 离线收益弹窗展示（支持普通领取和广告双倍）
+ * - 卡牌加成效果的初始化应用
+ */
+
 const { regClass, property,Browser } = Laya;
 import Data from "./model/index";
 import userInfo from './model/userInfo';
@@ -10,19 +22,29 @@ import { GameDataManager } from "./utils/GameDataManager";
 
 @regClass()
 export class Main extends Laya.Script {
+  /** 资产视图堆栈 */
   @property({ type: Laya.ViewStack })
   public viewStack: Laya.ViewStack;
+  /** 资产项预制体 */
   @property({ type: Laya.Prefab })
   public asset_item_prefab: Laya.Prefab;
+  /** 任务列表容器 */
   @property({ type: Laya.Box })
   public task_list_box: Laya.Box;
+  /** 任务项预制体 */
   @property({ type: Laya.Prefab })
   public task_item_prefab: Laya.Prefab;
+  /** 科学点数标签 */
   @property({ type: Laya.Label })
   public s_point_label: Laya.Label;
+  /** 任务总进度条 */
   @property({ type: Laya.ProgressBar })
   public task_progress:Laya.ProgressBar;
 
+  /**
+   * 组件启动时调用
+   * 按顺序初始化游戏的所有子系统
+   */
   onStart() {
     this.loadGameData();
     GameTimerManager.getInstance().start();
@@ -33,6 +55,16 @@ export class Main extends Laya.Script {
     this.startAutoSave();
   }
 
+  /**
+   * 加载游戏存档数据
+   * 
+   * 加载流程：
+   * 1. 从 localStorage 读取存档
+   * 2. 恢复游戏状态
+   * 3. 应用卡牌加成效果
+   * 4. 计算离线收益
+   * 5. 如果有离线收益，显示离线奖励弹窗；否则检查任务状态
+   */
   loadGameData() {
     const gameDataMgr = GameDataManager.getInstance();
     const saveData = gameDataMgr.load();
@@ -48,6 +80,17 @@ export class Main extends Laya.Script {
     }
   }
 
+  /**
+   * 显示离线收益弹窗
+   * @param result - 离线收益计算结果
+   * @param saveData - 存档数据（用于广告双倍计算）
+   * 
+   * 弹窗内容：
+   * - 离线时长显示
+   * - 各项资源收益明细
+   * - "确定"按钮：普通领取
+   * - "看广告x2"按钮：观看广告后领取双倍收益
+   */
   showOfflineRewardDialog(result: any, saveData: any) {
     const hours = Math.floor(result.offlineSeconds / 3600);
     const minutes = Math.floor((result.offlineSeconds % 3600) / 60);
@@ -127,6 +170,11 @@ export class Main extends Laya.Script {
     dialog.popup();
   }
 
+  /**
+   * 应用离线收益并关闭弹窗
+   * @param dialog - 弹窗实例
+   * @param result - 离线收益结果
+   */
   applyOfflineAndClose(dialog: Laya.Dialog, result: any): void {
     const gameDataMgr = GameDataManager.getInstance();
     gameDataMgr.applyOfflineEarnings(result);
@@ -135,6 +183,14 @@ export class Main extends Laya.Script {
     dialog.close();
   }
 
+  /**
+   * 观看广告获取双倍离线收益
+   * @param dialog - 弹窗实例
+   * @param result - 原始离线收益结果
+   * @param saveData - 存档数据
+   * 
+   * 使用 multiplier = 2 重新计算离线收益，然后应用
+   */
   watchAdForDouble(dialog: Laya.Dialog, result: any, saveData: any): void {
     console.log("[Ad] 观看广告获取双倍离线收益");
     const gameDataMgr = GameDataManager.getInstance();
@@ -145,19 +201,43 @@ export class Main extends Laya.Script {
     dialog.close();
   }
 
+  /**
+   * 启动自动存档定时器
+   * 每30秒自动保存一次游戏数据到 localStorage
+   */
   startAutoSave() {
     Laya.timer.loop(30000, this, () => {
       GameDataManager.getInstance().save();
     });
   }
+
+  /**
+   * 初始化全局事件监听
+   * 监听 Science_update 事件更新科学点数显示
+   */
   initEvent() {
     EventManager.getInstance().Add('Science_update', this, () => {
       this.s_point_label.text = userInfo.science_point.toString();
     })
   }
+
+  /**
+   * 初始化 UI 显示
+   * 设置科学点数的初始显示值
+   */
   initUI() {
     this.s_point_label.text = userInfo.science_point.toString();
   }
+
+  /**
+   * 初始化头部任务面板
+   * 
+   * 初始化流程：
+   * 1. 计算任务总进度
+   * 2. 获取当前显示的任务配置
+   * 3. 动态创建任务项并添加到任务列表
+   * 4. 根据屏幕宽度计算任务项的水平间距
+   */
   initHeaderPanel() {
     this.task_progress.value = userInfo.Task.task_step / Data.Tasks[userInfo.level].config.length;
     EventManager.getInstance().Add('task_progress_update', this, () => {
@@ -183,6 +263,18 @@ export class Main extends Laya.Script {
       instance.y = 20;
     }
   }
+
+  /**
+   * 初始化资产面板
+   * 
+   * 为每个父资产的每个子资产创建 AssetItem 组件：
+   * 1. 遍历所有父资产（Data.Assets）
+   * 2. 为每个子资产实例化预制体
+   * 3. 设置组件数据（配置、索引、兄弟组件引用）
+   * 4. 将组件添加到对应的面板容器中
+   * 
+   * 兄弟组件引用（bro）用于产出时的联动更新
+   */
   initAssetPanel() {
     const view_num = this.viewStack.numChildren;
     for (let view_idx = 0; view_idx < Data.Assets.length; view_idx++) {
@@ -219,6 +311,15 @@ export class Main extends Laya.Script {
       }
     }
   }
+
+  /**
+   * 初始化卡牌加成效果
+   * 
+   * 遍历玩家拥有的所有卡牌，将卡牌的等级加成应用到对应的资产 bonus 上
+   * 加成计算公式：bonus.quantity = level_ratio ^ card.level
+   * 
+   * 例如：level_ratio = 2，card.level = 3，则 bonus.quantity = 8
+   */
   initCardProfit() {
     userInfo.Card.forEach(card => {
       Data.Assets.forEach(asset => {

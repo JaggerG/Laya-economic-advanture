@@ -1,3 +1,15 @@
+/**
+ * 任务项组件
+ * 负责单个任务的展示、进度跟踪和完成处理
+ * 支持多种任务类型：OWN（拥有）、COLLECT（收集）、SPEND（花费）
+ * 
+ * 核心功能：
+ * - 任务描述和进度条展示
+ * - 根据任务类型监听不同的事件更新进度
+ * - 任务完成后派发奖励（卡牌、科学点数）
+ * - 自动切换到下一个任务
+ */
+
 const { regClass, property } = Laya;
 import userInfo from "./model/userInfo";
 import Data from "./model/index";
@@ -7,21 +19,39 @@ import * as BN from "./utils/BigNumber";
 
 @regClass()
 export class TaskItem extends Laya.Script {
+  /** 任务描述标签 */
   @property({ type: Laya.Label })
   public desc_label: Laya.Label;
+  /** 任务图标 */
   @property({ type: Laya.Image })
   public task_image: Laya.Image;
+  /** 任务进度条 */
   @property({ type: Laya.ProgressBar })
   public task_progress: Laya.ProgressBar;
+  /** 完成按钮/图标 */
   @property({ type: Laya.Sprite })
   public finish_img: Laya.Sprite;
 
+  /** 当前任务目标资产引用 */
   private cur_target_asset: any = null;
+  /** 任务目标数量 */
   private target_amount: string;
+  /** 任务配置 */
   private config: any;
+  /** COLLECT/SPEND 类型任务的当前累计数量 */
   private s_c_amount: string = "0";
+  /** 任务在面板中的索引 */
   private panel_idx: number;
 
+  /**
+   * 初始化任务数据
+   * @param data - 包含 config（任务配置）和 panel_idx（面板索引）的对象
+   * 
+   * 初始化逻辑：
+   * 1. 设置任务描述和目标数量
+   * 2. 根据任务类型初始化累计数量（COLLECT/SPEND 类型需要累计）
+   * 3. 查找目标资产引用（在 Data.Assets 或其子资产中搜索）
+   */
   public initData(data: any) {
     this.config = data.config;
     this.panel_idx = data.panel_idx;
@@ -55,10 +85,23 @@ export class TaskItem extends Laya.Script {
       }
     }
   }
+
+  /**
+   * 组件启动时调用
+   * 初始化事件监听并更新进度显示
+   */
   onStart() {
     this.initEvent();
     this.updateProgress();
   }
+
+  /**
+   * 初始化事件监听
+   * 根据任务类型绑定对应的事件：
+   * - COLLECT/SPEND 类型：监听 {assetName}_{type}_update 事件
+   * - OWN 类型：监听 {assetName}_update 事件
+   * 绑定完成按钮点击事件
+   */
   initEvent() {
     console.log(this.cur_target_asset.name);
     const eventName = this.config.type !== "OWN"
@@ -71,6 +114,12 @@ export class TaskItem extends Laya.Script {
     );
     this.finish_img.on(Laya.Event.CLICK, this, this.handleFinishClick);
 }
+
+  /**
+   * 初始化下一个任务
+   * 当前任务完成后，尝试加载下一个任务配置
+   * 如果没有更多任务，则销毁当前任务组件
+   */
     initNextTask() {
         const cur_task_idx = userInfo.Task.task_idx_max;
         if (cur_task_idx + 1 < Data.Tasks[userInfo.level].config.length) {
@@ -90,6 +139,17 @@ export class TaskItem extends Laya.Script {
             this.owner.destroy();
         } 
     }
+
+  /**
+   * 处理任务完成点击
+   * 
+   * 奖励派发流程：
+   * 1. 抽取随机数量的卡牌（c_min ~ c_max 张，至少 atLeast 张）
+   * 2. 收集并去重卡牌，更新玩家卡牌库
+   * 3. 抽取随机科学点数（s_min ~ s_max）
+   * 4. 切换到下一个任务
+   * 5. 派发相关更新事件
+   */
   handleFinishClick() {
     const c_min = this.config.reward.c_min;
     const c_max = this.config.reward.c_max;
@@ -115,6 +175,17 @@ export class TaskItem extends Laya.Script {
     userInfo.Task.task_step++;
     EventManager.getInstance().Emit('task_progress_update');
   }
+
+  /**
+   * 更新任务进度
+   * @param data - 事件传递的数据（COLLECT/SPEND 类型为变化量）
+   * 
+   * 进度计算：
+   * - COLLECT/SPEND 类型：累计变化量 / 目标数量
+   * - OWN 类型：当前资产数量 / 目标数量
+   * 
+   * 当进度 >= 1 时，显示完成按钮并移除事件监听
+   */
     updateProgress(data?: any) {
     if (data) {
       this.s_c_amount = BN.add(this.s_c_amount, data.toString());

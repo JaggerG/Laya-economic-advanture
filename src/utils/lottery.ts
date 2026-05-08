@@ -1,10 +1,32 @@
+/**
+ * 抽奖/抽卡工具模块
+ * 提供游戏中的随机抽卡、科学点数抽取、卡牌收集等功能
+ * 采用权重随机算法实现卡牌的稀有度控制
+ * 
+ * 核心功能：
+ * - 基于权重的卡牌随机抽取
+ * - 指定范围内的随机整数生成
+ * - 卡牌去重收集和玩家卡牌库更新
+ */
+
 import Data from "../model/index";
 import userInfo from "../model/userInfo";
 
-// 定义卡牌池
+/** 卡牌池，引用自游戏静态配置 */
 const cardPool = Data.Cards;
 
-// 纯随机概率抽取
+/**
+ * 基于权重的纯随机抽卡函数
+ * @param cards - 卡牌数组，每张卡牌需包含 weight 属性
+ * @returns 随机选中的单张卡牌
+ * 
+ * 算法说明：
+ * 1. 计算所有卡牌的权重总和
+ * 2. 生成 [0, totalWeight) 范围内的随机数
+ * 3. 遍历卡牌数组，依次减去每张卡牌的权重
+ * 4. 当随机数小于等于0时，返回当前卡牌
+ * 权重越大的卡牌被抽中的概率越高
+ */
 function pureRandomDraw(cards: any) {
   const totalWeight = cards.reduce(
     (acc: any, card: any) => acc + (card.weight || 1),
@@ -21,11 +43,16 @@ function pureRandomDraw(cards: any) {
 // for (let i = 0; i < 10; i++) {
 //   console.log(pureRandomDraw(cardPool));
 // }
+
 /**
- *
- * @param total
- * @param atLeast
- * @returns 卡牌信息
+ * 批量抽卡函数
+ * @param total - 基础抽卡次数
+ * @param atLeast - 保底抽卡次数（额外抽取）
+ * @returns 抽中的卡牌信息数组
+ * 
+ * 逻辑说明：
+ * 先执行 total 次基础抽取，再执行 atLeast 次保底抽取，
+ * 确保玩家至少获得 atLeast 张卡牌
  */
 const drawCard = (total: number, atLeast: number) => {
   // 卡片信息
@@ -40,10 +67,10 @@ const drawCard = (total: number, atLeast: number) => {
 };
 
 /**
- *
- * @param min 最小值
- * @param max 最大值
- * @return  科学点数
+ * 抽取科学点数
+ * @param min - 最小值
+ * @param max - 最大值
+ * @returns 范围内的随机科学点数
  */
 const drawSciencePoint = (min: number, max: number) => {
   // 科学点数
@@ -52,10 +79,10 @@ const drawSciencePoint = (min: number, max: number) => {
 };
 
 /**
- *
- * @param min 最小
- * @param max 最大
- * @returns 范围内的数
+ * 生成指定范围内的随机整数（包含边界值）
+ * @param min - 最小值
+ * @param max - 最大值
+ * @returns [min, max] 范围内的随机整数
  */
 const getRandomInt = (min: number, max: number) => {
   min = Math.ceil(min);
@@ -64,9 +91,15 @@ const getRandomInt = (min: number, max: number) => {
 };
 
 /**
- * 收集卡牌
- * @param cardInfo 卡牌信息
- * @returns 返回去重卡牌数据（动画用）
+ * 收集卡牌并更新玩家卡牌库
+ * @param cardInfo - 抽中的卡牌信息数组
+ * @returns 去重后的卡牌数据（用于动画展示）
+ * 
+ * 处理逻辑：
+ * 1. 将抽中的卡牌按名称去重，统计每种卡牌的数量（用于动画展示）
+ * 2. 更新玩家卡牌库 userInfo.Card：
+ *    - 如果卡牌已存在，增加 has_amount
+ *    - 如果卡牌不存在，初始化 level 为 0，has_amount 为 1，并加入卡牌库
  */
 const collectCard = (cardInfo: any) => {
   let card_info_arr: any = [];
@@ -95,6 +128,9 @@ const collectCard = (cardInfo: any) => {
   return card_info_arr;
 };
 
+/**
+ * 导出抽奖相关函数
+ */
 export default {
   drawSciencePoint,
   drawCard,

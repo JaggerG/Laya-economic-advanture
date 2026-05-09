@@ -1,0 +1,17 @@
+{
+  "uuid": "ae3de75e-ee9f-478d-9f8b-ede75a4fc296",
+  "importer": {
+    "textureType": 2,
+    "sizeGrid": [
+      0,
+      40,
+      0,
+      45,
+      0
+    ],
+    "platformDefault": {
+      "format": 10,
+      "quality": 2
+    }
+  }
+}

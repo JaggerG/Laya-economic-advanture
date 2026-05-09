@@ -1,0 +1,35 @@
+{
+  "type": 2,
+  "sRGB": true,
+  "wrapMode": 1,
+  "filterMode": 1,
+  "anisoLevel": 1,
+  "readWrite": false,
+  "mipmap": false,
+  "pma": true,
+  "hdrEncodeFormat": 0,
+  "files": [
+    {
+      "file": "0",
+      "ext": "dds",
+      "format": 4
+    },
+    {
+      "file": "1",
+      "ext": "ktx",
+      "format": 19
+    }
+  ],
+  "platforms": {
+    "0": 0,
+    "1": 1,
+    "2": 1
+  },
+  "sizeGrid": [
+    0,
+    40,
+    0,
+    45,
+    0
+  ]
+}

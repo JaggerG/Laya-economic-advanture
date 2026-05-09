@@ -65,7 +65,7 @@ export class CardDialog extends Laya.Script {
     const cur_level = cur_card.level;
     const cur_level_card_target = Data.Cards_Level_Target[cur_level];
     const cur_level_point = Data.Cards_Upgrade_Point[cur_level];
-    if (cur_card_amount > cur_level_card_target) {
+    if (cur_card_amount >= cur_level_card_target) {
       this.collect_progress.visible = false;
       this.upgrade_btn.visible = true;
       this.upgrade_btn.label = cur_level_point.toString();

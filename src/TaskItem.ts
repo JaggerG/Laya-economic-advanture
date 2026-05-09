@@ -165,6 +165,7 @@ export class TaskItem extends Laya.Script {
     LevelManager.getInstance().addExp(expReward);
 
     this.initNextTask();
+    //TODO: 奖励动画
     console.log("动画数据");
     console.log(card_arr_info);
     console.log(scienceInfo);

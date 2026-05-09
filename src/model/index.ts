@@ -109,6 +109,241 @@ let Assets = [
           },
         },
       },
+      {
+        name: "Commune",
+        amount: "1",
+        level: 1,
+        outcome: "8",
+        produce: "Farmer",
+        bro: "",
+        time: 8,
+        desc: "produce Commune",
+        cost: [
+          {
+            name: "Farmer",
+            quantity: "2",
+          },
+          {
+            name: "Employee",
+            quantity: "1",
+          },
+        ],
+        bonus: {
+          Power: {
+            name: "POWER",
+            quantity: "1",
+            url_img: "",
+          },
+          Discount: {
+            name: "DISCOUNT",
+            quantity: "1",
+            url_img: "",
+          },
+          Speed: {
+            name: "SPEED",
+            quantity: "1",
+            url_img: "",
+          },
+          Chance: {
+            name: "CHANCE",
+            quantity: "1",
+            url_img: "",
+          },
+          Bonus: {
+            name: "BONUS",
+            quantity: "1",
+            url_img: "",
+          },
+        },
+      },
+      {
+        name: "Commune",
+        amount: "1",
+        level: 1,
+        outcome: "8",
+        produce: "Farmer",
+        bro: "",
+        time: 18,
+        desc: "produce Commune",
+        cost: [
+          {
+            name: "Farmer",
+            quantity: "2",
+          },
+          {
+            name: "Employee",
+            quantity: "1",
+          },
+        ],
+        bonus: {
+          Power: {
+            name: "POWER",
+            quantity: "1",
+            url_img: "",
+          },
+          Discount: {
+            name: "DISCOUNT",
+            quantity: "1",
+            url_img: "",
+          },
+          Speed: {
+            name: "SPEED",
+            quantity: "1",
+            url_img: "",
+          },
+          Chance: {
+            name: "CHANCE",
+            quantity: "1",
+            url_img: "",
+          },
+          Bonus: {
+            name: "BONUS",
+            quantity: "1",
+            url_img: "",
+          },
+        },
+      },
+      {
+        name: "Commune",
+        amount: "1",
+        level: 1,
+        outcome: "8",
+        produce: "Farmer",
+        bro: "",
+        time: 38,
+        desc: "produce Commune",
+        cost: [
+          {
+            name: "Farmer",
+            quantity: "2",
+          },
+          {
+            name: "Employee",
+            quantity: "1",
+          },
+        ],
+        bonus: {
+          Power: {
+            name: "POWER",
+            quantity: "1",
+            url_img: "",
+          },
+          Discount: {
+            name: "DISCOUNT",
+            quantity: "1",
+            url_img: "",
+          },
+          Speed: {
+            name: "SPEED",
+            quantity: "1",
+            url_img: "",
+          },
+          Chance: {
+            name: "CHANCE",
+            quantity: "1",
+            url_img: "",
+          },
+          Bonus: {
+            name: "BONUS",
+            quantity: "1",
+            url_img: "",
+          },
+        },
+      },
+            {
+        name: "Commune",
+        amount: "1",
+        level: 1,
+        outcome: "8",
+        produce: "Farmer",
+        bro: "",
+        time: 28,
+        desc: "produce Commune",
+        cost: [
+          {
+            name: "Farmer",
+            quantity: "2",
+          },
+          {
+            name: "Employee",
+            quantity: "1",
+          },
+        ],
+        bonus: {
+          Power: {
+            name: "POWER",
+            quantity: "1",
+            url_img: "",
+          },
+          Discount: {
+            name: "DISCOUNT",
+            quantity: "1",
+            url_img: "",
+          },
+          Speed: {
+            name: "SPEED",
+            quantity: "1",
+            url_img: "",
+          },
+          Chance: {
+            name: "CHANCE",
+            quantity: "1",
+            url_img: "",
+          },
+          Bonus: {
+            name: "BONUS",
+            quantity: "1",
+            url_img: "",
+          },
+        },
+      },
+            {
+        name: "Commune",
+        amount: "1",
+        level: 1,
+        outcome: "8",
+        produce: "Farmer",
+        bro: "",
+        time: 8,
+        desc: "produce Commune",
+        cost: [
+          {
+            name: "Farmer",
+            quantity: "2",
+          },
+          {
+            name: "Employee",
+            quantity: "1",
+          },
+        ],
+        bonus: {
+          Power: {
+            name: "POWER",
+            quantity: "1",
+            url_img: "",
+          },
+          Discount: {
+            name: "DISCOUNT",
+            quantity: "1",
+            url_img: "",
+          },
+          Speed: {
+            name: "SPEED",
+            quantity: "1",
+            url_img: "",
+          },
+          Chance: {
+            name: "CHANCE",
+            quantity: "1",
+            url_img: "",
+          },
+          Bonus: {
+            name: "BONUS",
+            quantity: "1",
+            url_img: "",
+          },
+        },
+      },
     ],
   },
   {
@@ -123,7 +358,7 @@ let Assets = [
         outcome: "4",
         produce: "Parent",
         bro: "",
-        time: 8,
+        time: 48,
         desc: "produce potatoes",
         cost: [
           {

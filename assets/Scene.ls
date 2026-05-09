@@ -59,7 +59,10 @@
                   },
                   "task_progress": {
                     "_$ref": "horfrnce"
-                  }
+                  },
+                  "level_label": null,
+                  "exp_progress": null,
+                  "exp_label": null
                 }
               ],
               "_$child": [
@@ -236,7 +239,9 @@
                           "name": "asset_panels",
                           "width": 399,
                           "height": 469,
-                          "_mouseState": 2
+                          "_mouseState": 2,
+                          "scrollType": 2,
+                          "elasticEnabled": true
                         }
                       ]
                     },
@@ -400,7 +405,7 @@
                   "autoDestroyAtClosed": true,
                   "_$comp": [
                     {
-                      "_$type": "e6bb4225-00cc-4257-9219-5c56e87e46da",
+                      "_$type": "44b755ec-81bf-404c-b0b7-fdd8b9fa792b",
                       "scriptPath": "../src/CardDialog.ts",
                       "collect_progress": {
                         "_$ref": "qrr3lreg"

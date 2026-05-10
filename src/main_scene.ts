@@ -1,7 +1,7 @@
 /**
  * 主场景组件
  * 游戏的核心入口场景，负责初始化所有游戏系统和 UI 组件
- * 
+ *
  * 核心功能：
  * - 游戏存档的加载和离线收益处理
  * - 资产面板、任务面板、头部面板的初始化
@@ -10,11 +10,11 @@
  * - 卡牌加成效果的初始化应用
  */
 
-const { regClass, property,Browser } = Laya;
+const { regClass, property, Browser } = Laya;
 import Data from "./model/index";
-import userInfo from './model/userInfo';
+import userInfo from "./model/userInfo";
 import { AssetItem } from "./AssetItem";
-import { TaskItem } from './TaskItem'
+import { TaskItem } from "./TaskItem";
 import EventManager from "./utils/EventManager";
 import Assets from "./utils/Assets";
 import { GameTimerManager } from "./utils/GameTimerManager";
@@ -40,7 +40,7 @@ export class Main extends Laya.Script {
   public s_point_label: Laya.Label;
   /** 任务总进度条 */
   @property({ type: Laya.ProgressBar })
-  public task_progress:Laya.ProgressBar;
+  public task_progress: Laya.ProgressBar;
   /** 等级标签 */
   @property({ type: Laya.Label })
   public level_label: Laya.Label;
@@ -67,7 +67,7 @@ export class Main extends Laya.Script {
 
   /**
    * 加载游戏存档数据
-   * 
+   *
    * 加载流程：
    * 1. 从 localStorage 读取存档
    * 2. 恢复游戏状态
@@ -94,7 +94,7 @@ export class Main extends Laya.Script {
    * 显示离线收益弹窗
    * @param result - 离线收益计算结果
    * @param saveData - 存档数据（用于广告双倍计算）
-   * 
+   *
    * 弹窗内容：
    * - 离线时长显示
    * - 各项资源收益明细
@@ -198,7 +198,7 @@ export class Main extends Laya.Script {
    * @param dialog - 弹窗实例
    * @param result - 原始离线收益结果
    * @param saveData - 存档数据
-   * 
+   *
    * 使用 multiplier = 2 重新计算离线收益，然后应用
    */
   watchAdForDouble(dialog: Laya.Dialog, result: any, saveData: any): void {
@@ -226,11 +226,11 @@ export class Main extends Laya.Script {
    * 监听 Science_update 事件更新科学点数显示
    */
   initEvent() {
-    EventManager.getInstance().Add('Science_update', this, () => {
+    EventManager.getInstance().Add("Science_update", this, () => {
       this.s_point_label.text = userInfo.science_point.toString();
     });
-    EventManager.getInstance().Add('Exp_update', this, this.updateLevelUI);
-    EventManager.getInstance().Add('LevelUp', this, this.onLevelUp);
+    EventManager.getInstance().Add("Exp_update", this, this.updateLevelUI);
+    EventManager.getInstance().Add("LevelUp", this, this.onLevelUp);
   }
 
   /**
@@ -239,8 +239,9 @@ export class Main extends Laya.Script {
   updateLevelUI() {
     const levelMgr = LevelManager.getInstance();
     const progress = levelMgr.getExpProgress();
-    this.level_label.text = "Lv." + userInfo.level;
-    this.exp_progress.value = progress.required > 0 ? progress.current / progress.required : 0;
+    // this.level_label.text = "Lv." + userInfo.level;
+    this.exp_progress.value =
+      progress.required > 0 ? progress.current / progress.required : 0;
     this.exp_label.text = progress.current + "/" + progress.required;
   }
 
@@ -308,7 +309,7 @@ export class Main extends Laya.Script {
 
   /**
    * 初始化头部任务面板
-   * 
+   *
    * 初始化流程：
    * 1. 计算任务总进度
    * 2. 获取当前显示的任务配置
@@ -316,40 +317,42 @@ export class Main extends Laya.Script {
    * 4. 根据屏幕宽度计算任务项的水平间距
    */
   initHeaderPanel() {
-    this.task_progress.value = userInfo.Task.task_step / Data.Tasks[userInfo.level].config.length;
-    EventManager.getInstance().Add('task_progress_update', this, () => {
-      this.task_progress.value = userInfo.Task.task_step / Data.Tasks[userInfo.level].config.length;
+    this.task_progress.value =
+      userInfo.Task.task_step / Data.Tasks[userInfo.level].config.length;
+    EventManager.getInstance().Add("task_progress_update", this, () => {
+      this.task_progress.value =
+        userInfo.Task.task_step / Data.Tasks[userInfo.level].config.length;
     });
-    const task_config = Data.Tasks[userInfo.Task.task_level].config
+    const task_config = Data.Tasks[userInfo.Task.task_level].config;
     const cur_task_config = userInfo.Task.task_idx_config;
     let cur_task = [];
-    for (let i = 0; i < cur_task_config.length; i++){
+    for (let i = 0; i < cur_task_config.length; i++) {
       let task_idx = cur_task_config[i].idx;
       cur_task.push(task_config[task_idx]);
     }
     let offset = (Browser.clientWidth - cur_task.length * 100) / 4;
-    for (let i = 0; i < cur_task.length; i++){
+    for (let i = 0; i < cur_task.length; i++) {
       let instance: Laya.Sprite = this.task_item_prefab.create() as Laya.Sprite;
       const data = {
         panel_idx: i,
-        config: cur_task[i]
-      }
+        config: cur_task[i],
+      };
       instance.getComponent(TaskItem).initData(data);
       this.task_list_box.addChild(instance);
-      instance.x = i * 100 + offset*(i+1);
+      instance.x = i * 100 + offset * (i + 1);
       instance.y = 20;
     }
   }
 
   /**
    * 初始化资产面板
-   * 
+   *
    * 为每个父资产的每个子资产创建 AssetItem 组件：
    * 1. 遍历所有父资产（Data.Assets）
    * 2. 为每个子资产实例化预制体
    * 3. 设置组件数据（配置、索引、兄弟组件引用）
    * 4. 将组件添加到对应的面板容器中
-   * 
+   *
    * 兄弟组件引用（bro）用于产出时的联动更新
    */
   initAssetPanel() {
@@ -384,31 +387,34 @@ export class Main extends Laya.Script {
           .getChildByName("asset_panels");
         cur_asset_panel.addChild(instance);
         instance.x = 10;
-        instance.y = asset_idx * 85 + 20;
+        instance.y = asset_idx * 100 + 20;
       }
     }
   }
 
   /**
    * 初始化卡牌加成效果
-   * 
+   *
    * 遍历玩家拥有的所有卡牌，将卡牌的等级加成应用到对应的资产 bonus 上
    * 加成计算公式：bonus.quantity = level_ratio ^ card.level
-   * 
+   *
    * 例如：level_ratio = 2，card.level = 3，则 bonus.quantity = 8
    */
   initCardProfit() {
-    userInfo.Card.forEach(card => {
-      Data.Assets.forEach(asset => {
-        asset.child.forEach(child => {
+    userInfo.Card.forEach((card) => {
+      Data.Assets.forEach((asset) => {
+        asset.child.forEach((child) => {
           if (child.name === card.related_assets) {
-            const key = card.type as keyof typeof child.bonus
-            let cur_bonus = child.bonus[key]
-            cur_bonus.quantity = Math.pow(card.level_ratio, card.level).toString();
+            const key = card.type as keyof typeof child.bonus;
+            let cur_bonus = child.bonus[key];
+            cur_bonus.quantity = Math.pow(
+              card.level_ratio,
+              card.level,
+            ).toString();
           }
-        })
-      })
-    })
+        });
+      });
+    });
     console.log(Data.Assets);
   }
 }
